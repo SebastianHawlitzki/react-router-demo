@@ -1,26 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {useEffect, useState} from 'react';
 import './App.css';
+import {BrowserRouter, createBrowserRouter, Link, Route, RouterProvider, Routes} from "react-router-dom";
+import Hello from "./Hello";
+import Root from "./Root";
+import axios from "axios";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export type Character = {
+    id: number,
+    name: string
 }
 
-export default App;
+
+
+export default function App() {
+
+    const [characters, setCharacters] = useState<Character[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await axios.get("https://rickandmortyapi.com/api/character")
+                setCharacters(response.data.results)
+            } catch (e : any) {
+                console.error(e.message);
+            }
+        })();
+
+    }, [])
+
+    return (
+        <BrowserRouter>
+        <h1>Namen</h1>
+
+            <ul>
+                {characters.map(character =>
+                    <li key={character.id}><Link to={"/hello/" + character.id}>{character.name}</Link></li>)}
+            </ul>
+              <Routes>
+                  <Route path={"/"} element={<Root/>}/>
+                  <Route path={"/hello/:id"} element={<Hello characters={characters}/>}/>
+
+              </Routes>
+
+
+        </BrowserRouter>
+    );
+}
+
+
