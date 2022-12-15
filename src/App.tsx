@@ -11,7 +11,6 @@ export type Character = {
 }
 
 
-
 export default function App() {
 
     const [characters, setCharacters] = useState<Character[]>([]);
@@ -21,7 +20,7 @@ export default function App() {
             try {
                 const response = await axios.get("https://rickandmortyapi.com/api/character")
                 setCharacters(response.data.results)
-            } catch (e : any) {
+            } catch (e: any) {
                 console.error(e.message);
             }
         })();
@@ -29,33 +28,25 @@ export default function App() {
     }, [])
 
 
-    const initialState ={
-        id: 0,
-        name: "",
-    }
-
-    const [newCharacter, setNewCharacter] = useState<Character>(initialState);
-
-    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-
-
-
-    }
+    const [id, setId] = useState<string>("")
 
 
     return (
         <BrowserRouter>
-        <h1>Namen</h1>
+            <h1>Namen</h1>
 
             <ul>
                 {characters.map(character =>
                     <li key={character.id}><Link to={"/hello/" + character.id}>{character.name}</Link></li>)}
             </ul>
-              <Routes>
-                  <Route path={"/"} element={<Root/>}/>
-                  <Route path={"/hello/:id"} element={<Hello characters={characters}/>}/>
-              </Routes>
-
+            <Routes>
+                <Route path={"/"} element={<Root/>}/>
+                <Route path={"/hello/:id"} element={<Hello characters={characters}/>}/>
+            </Routes>
+            <input type="number" onChange={event => setId(event.target.value)}/>
+            <a href={"/hello/" + id}>
+                <button>Submit</button>
+            </a>
 
         </BrowserRouter>
     );
