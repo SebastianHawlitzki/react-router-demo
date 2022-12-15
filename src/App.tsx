@@ -28,6 +28,21 @@ export default function App() {
 
     }, [])
 
+
+    const initialState ={
+        id: 0,
+        name: "",
+    }
+
+    const [newCharacter, setNewCharacter] = useState<Character>(initialState);
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+
+
+    }
+
+
     return (
         <BrowserRouter>
         <h1>Namen</h1>
@@ -39,7 +54,6 @@ export default function App() {
               <Routes>
                   <Route path={"/"} element={<Root/>}/>
                   <Route path={"/hello/:id"} element={<Hello characters={characters}/>}/>
-
               </Routes>
 
 
